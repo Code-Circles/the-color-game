@@ -19,6 +19,7 @@ function setup() {
 
     randomizeButton = createButton('Randomize');
     randomizeButton.style('font-size', '22px');
+    randomizeButton.style('color', 'black');
     randomizeButton.style('background-color', 'deeppink');
     randomizeButton.style('border', '2px solid black');
     randomizeButton.style('border-radius', "50px");
@@ -248,11 +249,6 @@ function mouseClicked() {
     } else {
         clickedCard = null;
     }
-}
-
-function touchStarted() {
-    mouseClicked();
-    return false;
 }
 
 let cardStack = [];
