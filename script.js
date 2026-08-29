@@ -4,7 +4,7 @@ let infoLink;
 let randomizeButton;
 
 function randomize() {
-    COLORS = shuffle(COLORS);
+    COLORS = shuffleArray(COLORS);
 }
 
 function setup() {
@@ -32,6 +32,7 @@ function windowResized() {
     resizeTimeout = setTimeout(() => {
       resizeCanvas(windowWidth, windowHeight);
     }, 250); 
+    resizeCanvas(windowWidth, windowHeight);
 }
 
 function createShapeWithHole(originX, originY, rectWidth, rectHeight, color, holes) {
@@ -57,7 +58,7 @@ function createShapeWithHole(originX, originY, rectWidth, rectHeight, color, hol
     return shapeGraphics;
 }
 
-function shuffle(array) {
+function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
