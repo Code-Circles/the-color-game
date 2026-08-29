@@ -8,6 +8,7 @@ function randomize() {
 }
 
 function setup() {
+    pixelDensity(1);
     createCanvas(windowWidth, windowHeight);
 
     infoLink = createA('https://www.eastgate.com/catalog/TedNaosCollection.html', 'Tad Naos Collection', '_blank');
@@ -27,7 +28,10 @@ function setup() {
 }
 
 function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      resizeCanvas(windowWidth, windowHeight);
+    }, 250); 
 }
 
 function createShapeWithHole(originX, originY, rectWidth, rectHeight, color, holes) {
