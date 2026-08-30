@@ -3,36 +3,34 @@ let COLORS = ["teal", "darkorange", "gold", "purple", "chartreuse", "red", "deep
 let infoLink;
 let randomizeButton;
 
+const SPACING = 40;
+let ROWS;
+let COLUMNS;
+
+let originX;
+let originY;
+let stackX;
+let stackY;
+let gridStartX;
+let gridEndX;
+let gridEndY;
+let gridWidth;
+let gridHeight;
+
+let cards = []
+
 function randomize() {
     COLORS = shuffleArray(COLORS);
-}
-
-function setup() {
-    pixelDensity(1);
-    createCanvas(windowWidth, windowHeight);
-
-    infoLink = createA('https://www.eastgate.com/catalog/TedNaosCollection.html', 'Tad Naos Collection', '_blank');
-    infoLink.style('font-family', "Courier");
-    infoLink.style('color', 'black');
-    infoLink.style('font-size', '22px');
-    infoLink.style('text-decoration', 'underline');
-
-    randomizeButton = createButton('Randomize');
-    randomizeButton.style('font-size', '22px');
-    randomizeButton.style('color', 'black');
-    randomizeButton.style('background-color', 'deeppink');
-    randomizeButton.style('border', '2px solid black');
-    randomizeButton.style('border-radius', "50px");
-    randomizeButton.style('padding', '10px');
-    randomizeButton.style('cursor', 'pointer');
-    randomizeButton.mousePressed(randomize);
+    for (i = 0; i < cards.length; i++) {
+        cards[i].update();
+    }
 }
 
 function windowResized() {
-    clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
-      resizeCanvas(windowWidth, windowHeight);
-    }, 250); 
+        resizeCanvas(windowWidth, windowHeight);
+    }, 250);
+    clearTimeout(resizeTimeout);
     resizeCanvas(windowWidth, windowHeight);
 }
 
@@ -210,7 +208,8 @@ let rectHeight = 120;
 let stackCardWidth = 300;
 let stackCardHeight = 300;
 
-let cardCoords = []
+let cardCoords = [];
+let cardStack = [];
 
 let clickedCard = null;
 
@@ -219,68 +218,124 @@ function checkBounds(coords, width, height) {
         (mouseY < coords[1] + height / 2 && mouseY > coords[1] - height / 2))
 }
 
+function touchStarted() {
+    mouseClicked();
+    return false;
+}
+
 function mouseClicked() {
-    if (checkBounds(cardCoords[0], rectWidth, rectHeight)) {
-        clickedCard = 0;
-    } else if (checkBounds(cardCoords[1], rectWidth, rectHeight)) {
-        clickedCard = 1;
-    } else if (checkBounds(cardCoords[2], rectWidth, rectHeight)) {
-        clickedCard = 2;
-    } else if (checkBounds(cardCoords[3], rectWidth, rectHeight)) {
-        clickedCard = 3;
-    } else if (checkBounds(cardCoords[4], rectWidth, rectHeight)) {
-        clickedCard = 4;
-    } else if (checkBounds(cardCoords[5], rectWidth, rectHeight)) {
-        clickedCard = 5;
-    } else if (checkBounds(cardCoords[6], rectWidth, rectHeight)) {
-        clickedCard = 6;
-    } else if (checkBounds(cardCoords[7], rectWidth, rectHeight)) {
-        clickedCard = 7;
-    } else if (checkBounds(cardCoords[8], rectWidth, rectHeight)) {
-        clickedCard = 8;
-    } else if (checkBounds(cardCoords[9], rectWidth, rectHeight)) {
-        clickedCard = 9;
-    } else if (checkBounds(cardCoords[10], rectWidth, rectHeight)) {
-        clickedCard = 10;
-    } else if (checkBounds(cardCoords[11], rectWidth, rectHeight)) {
-        clickedCard = 11;
-    } else if (checkBounds(cardCoords[12], stackCardWidth, stackCardHeight)) {
-        clickedCard = 12;
-    } else {
-        clickedCard = null;
+    let w = rectWidth;
+    let h = rectHeight;
+
+    for (i = 0; i < 13; i++) {
+        if (i == 12) {
+            w = stackCardWidth;
+            h = stackCardHeight;
+        }
+        if (checkBounds(cardCoords[i], w, h)) {
+            clickedCard = i;
+            break;
+        } else {
+            clickedCard = null;
+        }
     }
 }
 
-let cardStack = [];
+class Card {
+    constructor(n, startX, startY, cardWidth, cardHeight, shapeGraphics) {
+        this.n = n;
+        this.x = startX;
+        this.y = startY;
+        this.w = cardWidth;
+        this.h = cardHeight;
+        this.sg = shapeGraphics;
+        this.color = COLORS[this.n];
 
-function draw() {
-    const SPACING = 40;
-    let ROWS = 4;
-    let COLUMNS = 3;
+    }
 
-    let originX = width / 2;
-    let originY = height / 4;
-    let stackX = width / 7;
-    let stackY = height / 4;
-    let gridStartX = width / 2;
-    let gridWidth =  COLUMNS * rectHeight + (COLUMNS - 1) * SPACING;
-    let gridHeight = ROWS * rectWidth + (ROWS - 1) * SPACING;
+    display() {
+        image(this.sg, this.x - this.w / 2, this.y - this.h / 2);
+    }
+
+    update() {
+        this.sg = getCard(this.n, this.x, this.y, this.w, this.h)
+        this.display();
+    }
+}
+
+function setup() {
+
+    ROWS = 3;
+    COLUMNS = 4;
+
+    pixelDensity(1);
+    createCanvas(windowWidth, windowHeight);
+
+    originX = width / 2;
+    originY = height / 4;
+    stackX = width / 7;
+    stackY = height / 4;
+    gridStartX = width / 2;
+    gridWidth = COLUMNS * rectWidth + (COLUMNS - 1) * SPACING;
+    gridHeight = ROWS * rectHeight + (ROWS - 1) * SPACING;
+    cardCoords = [];
 
     if (width < 1120) {
+        ROWS = 4;
+        COLUMNS = 3;
         rectWidth = 80
         rectHeight = 80
         stackCardWidth = 180
         stackCardHeight = 180
-        ROWS = 3;
-        COLUMNS = 4;
+        gridWidth = COLUMNS * rectWidth + (COLUMNS - 1) * SPACING;
+        gridHeight = ROWS * rectHeight + (ROWS - 1) * SPACING;
         stackX = (width - stackCardWidth) / 2;
-        stackY = Math.max(24, (windowHeight - (stackCardHeight + 72 + COLUMNS * rectHeight + (COLUMNS - 1) * SPACING)) / 2);
-        gridStartX = (width - (ROWS * rectWidth + (ROWS - 1) * SPACING)) / 2 + rectWidth / 2;
+        stackY = Math.max(24, (windowHeight - (stackCardHeight + 72 + ROWS * rectHeight + (ROWS - 1) * SPACING)) / 2);
+        gridStartX = (width - (COLUMNS * rectWidth + (COLUMNS - 1) * SPACING)) / 2 + rectWidth / 2;
         originX = gridStartX;
         originY = stackY + stackCardHeight + 72 + rectHeight / 2;
     }
 
-    let canvasH = Math.max(windowHeight, originY + COLUMNS * (rectHeight + SPACING) + 180);
+    infoLink = createA('https://www.eastgate.com/catalog/TedNaosCollection.html', 'Tad Naos Collection', '_blank');
+    infoLink.style('font-family', "Courier");
+    infoLink.style('color', 'black');
+    infoLink.style('font-size', '22px');
+    infoLink.style('text-decoration', 'underline');
+
+    randomizeButton = createButton('Randomize');
+    randomizeButton.style('font-size', '22px');
+    randomizeButton.style('color', 'black');
+    randomizeButton.style('background-color', 'deeppink');
+    randomizeButton.style('border', '2px solid black');
+    randomizeButton.style('border-radius', "50px");
+    randomizeButton.style('padding', '10px');
+    randomizeButton.style('cursor', 'pointer');
+    randomizeButton.mousePressed(randomize);
+
+    let card = 0;
+    for (let i = 0; i < ROWS; i++) {
+        for (let j = 0; j < COLUMNS; j++) {
+            cardCoords.push([originX, originY]);
+            let sg = getCard(card, originX, originY, rectWidth, rectHeight);
+            let c = new Card(card, originX, originY, rectWidth, rectHeight, sg);
+            cards.push(c);
+            originX = originX + rectWidth + SPACING;
+            card++;
+        }
+        originX = gridStartX;
+        originY = originY + rectHeight + SPACING;
+    }
+    gridEndX = originX;
+    gridEndY = originY;
+}
+
+function draw() {
+    originY = height / 4;
+    if (width < 1120) {
+        originY = stackY + stackCardHeight + 72 + rectHeight / 2;
+    }
+
+    let canvasH = Math.max(windowHeight, originY + COLUMNS * (rectWidth + SPACING) + 180);
     if (height !== canvasH) {
         resizeCanvas(windowWidth, canvasH);
     }
@@ -288,20 +343,9 @@ function draw() {
     background("lightgray");
     rectMode(CENTER);
 
-    cardCoords = [];
-
     // Available card grid
-    let card = 0;
-    for (let i = 0; i < COLUMNS; i++) {
-        for (let j = 0; j < ROWS; j++) {
-            cardCoords.push([originX, originY]);
-            let sg = getCard(card, originX, originY, rectWidth, rectHeight);
-            image(sg, originX - rectWidth / 2, originY - rectHeight / 2);
-            originX = originX + rectWidth + SPACING;
-            card++;
-        }
-        originX = gridStartX;
-        originY = originY + rectHeight + SPACING;
+    for (i = 0; i < cards.length; i++) {
+        cards[i].display()
     }
 
     cardCoords.push([stackX + stackCardWidth / 2, stackY + stackCardHeight / 2]);
@@ -323,17 +367,21 @@ function draw() {
 
     textFont("Courier");
     textSize(22);
-    textAlign("left");
+    textAlign("center");
     if (width < 1120) {
-        textAlign("center");
-        text("this is a computational version of \"the color game\" - a niche card game from 1999 invented by designer ted naos. you can read more about it here:", gridStartX + gridWidth / 3, originY - 50, 440);
-        infoLink.position(gridStartX - 20 , 2 * gridHeight + 50);
+        textSize(18);
+        text("this is a computational version of \"the color game\" - a niche card game from 1999 invented by designer ted naos. you can read more about it here:", gridStartX + gridWidth / 2 - rectWidth / 2, gridEndY - 50, 440);
+        infoLink.style("position", "relative");
+        infoLink.style("margin", "auto");
+        infoLink.style("display", "block");
+        infoLink.style("width", "100%");
+        infoLink.style("text-align", "center");
+        infoLink.style("font-size", "18px");
         randomizeButton.style('font-size', '18px');
         randomizeButton.position(Math.max(16, width - 150), 35);
     } else {
-       text("this is a computational version of \"the color game\" - a niche card game from 1999 invented by designer ted naos. you can read more about it here:", originX + 200, originY - 50, 700);
-        print(gridHeight)
-        infoLink.position(gridStartX - 150, gridHeight + 175);
-        randomizeButton.position(width / 1.25, 35);
+        text("this is a computational version of \"the color game\" - a niche card game from 1999 invented by designer ted naos. you can read more about it here:", width / 2, gridEndY - 50, 700);
+        infoLink.position(width / 2 - 250 / 2, gridEndY + 70);
+        randomizeButton.position(gridStartX + gridWidth - rectWidth - SPACING - 25, 35);
     }
 }
