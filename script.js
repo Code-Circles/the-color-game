@@ -220,11 +220,20 @@ function checkBounds(coords, width, height) {
 }
 
 function touchStarted() {
-    mouseClicked();
+    onCardClick();
     return false;
 }
 
-function mouseClicked() {
+function mousePressed() {
+    if (touches.length > 0) return;
+    onCardClick();
+}
+
+function mouseClick() {
+    onCardClick();
+}
+
+function onCardClick() {
     let w = rectWidth;
     let h = rectHeight;
 
@@ -378,15 +387,15 @@ function draw() {
         infoLink.style("width", "100%");
         infoLink.style("text-align", "center");
         infoLink.style("font-size", "18px");
-        infoLink.style("top", `${gridEndY+100}px`)
+        infoLink.style("top", `${gridEndY + 100}px`)
         randomizeButton.style('font-size', '18px');
         randomizeButton.position(Math.max(16, width - 150), 35);
         textSize(16);
-        text ("p.s code circles is not affiliated with eastgate or the designer in any way. we are an organization exploring coding for intention, community and fun.", gridStartX + gridWidth / 2 - rectWidth/2, gridEndY + 150, 350)
+        text("p.s code circles is not affiliated with eastgate or the designer in any way. we are an organization exploring coding for intention, community and fun.", gridStartX + gridWidth / 2 - rectWidth / 2, gridEndY + 150, 350)
     } else {
         text("this is a computational version of \"the color game\" - a niche card game from 1999 invented by designer ted naos. you can read more about it here:", width / 2, gridEndY - 50, 700);
         infoLink.position(width / 2 - 250 / 2, gridEndY + 70);
         randomizeButton.position(gridStartX + gridWidth - rectWidth - SPACING - 25, 35);
-        text ("p.s code circles is not affiliated with eastgate or the designer in any way. we are an organization exploring coding for intention, community and fun.", width / 2, gridEndY + 150, 700)
+        text("p.s code circles is not affiliated with eastgate or the designer in any way. we are an organization exploring coding for intention, community and fun.", width / 2, gridEndY + 150, 700)
     }
 }
