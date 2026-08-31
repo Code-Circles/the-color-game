@@ -371,7 +371,7 @@ function draw() {
     textAlign("center");
     if (width < 1120) {
         textSize(18);
-        text("this is a computational version of \"the color game\" - a niche card game from 1999 invented by designer ted naos. you can read more about it here:", gridStartX + gridWidth / 2 - rectWidth / 2, gridEndY - 50, 400);
+        text("this is a computational version of \"the color game\" - a niche card game from 1999 invented by designer ted naos. you can read more about it here:", gridStartX + gridWidth / 2 - rectWidth / 2, gridEndY - 50, 350);
         infoLink.style("position", "absolute");
         infoLink.style("margin", "auto");
         infoLink.style("display", "block");
@@ -382,7 +382,7 @@ function draw() {
         randomizeButton.style('font-size', '18px');
         randomizeButton.position(Math.max(16, width - 150), 35);
         textSize(16);
-        text ("p.s code circles is not affiliated with eastgate or the designer in any way. we are an organization exploring coding for intention, community and fun.", gridStartX + gridWidth / 2 - rectWidth/2, gridEndY + 150, 400)
+        text ("p.s code circles is not affiliated with eastgate or the designer in any way. we are an organization exploring coding for intention, community and fun.", gridStartX + gridWidth / 2 - rectWidth/2, gridEndY + 150, 350)
     } else {
         text("this is a computational version of \"the color game\" - a niche card game from 1999 invented by designer ted naos. you can read more about it here:", width / 2, gridEndY - 50, 700);
         infoLink.position(width / 2 - 250 / 2, gridEndY + 70);
