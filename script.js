@@ -291,7 +291,7 @@ function setup() {
         gridWidth = COLUMNS * rectWidth + (COLUMNS - 1) * SPACING;
         gridHeight = ROWS * rectHeight + (ROWS - 1) * SPACING;
         stackX = (width - stackCardWidth) / 2;
-        stackY = Math.max(24, (windowHeight - (stackCardHeight + 72 + ROWS * rectHeight + (ROWS - 1) * SPACING)) / 2);
+        stackY = Math.max(100, (windowHeight - (stackCardHeight + 72 + ROWS * rectHeight + (ROWS - 1) * SPACING)) / 2);
         gridStartX = (width - (COLUMNS * rectWidth + (COLUMNS - 1) * SPACING)) / 2 + rectWidth / 2;
         originX = gridStartX;
         originY = stackY + stackCardHeight + 72 + rectHeight / 2;
@@ -382,11 +382,11 @@ function draw() {
         randomizeButton.style('font-size', '18px');
         randomizeButton.position(Math.max(16, width - 150), 35);
         textSize(16);
-        text ("p.s code circles is not affiliated with eastgate or the designer in any way. we are a organization exploring coding for intention, community and fun.", gridStartX + gridWidth / 2 - rectWidth/2, gridEndY + 150, 400)
+        text ("p.s code circles is not affiliated with eastgate or the designer in any way. we are an organization exploring coding for intention, community and fun.", gridStartX + gridWidth / 2 - rectWidth/2, gridEndY + 150, 400)
     } else {
         text("this is a computational version of \"the color game\" - a niche card game from 1999 invented by designer ted naos. you can read more about it here:", width / 2, gridEndY - 50, 700);
         infoLink.position(width / 2 - 250 / 2, gridEndY + 70);
         randomizeButton.position(gridStartX + gridWidth - rectWidth - SPACING - 25, 35);
-        text ("p.s code circles is not affiliated with eastgate or the designer in any way. we are a organization exploring coding for intention, community and fun.", width / 2, gridEndY + 150, 700)
+        text ("p.s code circles is not affiliated with eastgate or the designer in any way. we are an organization exploring coding for intention, community and fun.", width / 2, gridEndY + 150, 700)
     }
 }
