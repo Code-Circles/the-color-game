@@ -225,8 +225,8 @@ function touchStarted() {
 }
 
 function mousePressed() {
-    if (touches.length > 0) return;
     onCardClick();
+    return false;
 }
 
 function mouseClick() {
