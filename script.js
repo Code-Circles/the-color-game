@@ -2,6 +2,7 @@ let COLORS = ["teal", "darkorange", "gold", "purple", "chartreuse", "red", "deep
 
 let infoLink;
 let randomizeButton;
+let igLink;
 
 const SPACING = 40;
 let ROWS;
@@ -335,7 +336,7 @@ function draw() {
         originY = stackY + stackCardHeight + 72 + rectHeight / 2;
     }
 
-    let canvasH = Math.max(windowHeight, originY + COLUMNS * (rectWidth + SPACING) + 180);
+    let canvasH = Math.max(windowHeight, originY + ROWS * (rectHeight + SPACING) + 280);
     if (height !== canvasH) {
         resizeCanvas(windowWidth, canvasH);
     }
@@ -370,18 +371,22 @@ function draw() {
     textAlign("center");
     if (width < 1120) {
         textSize(18);
-        text("this is a computational version of \"the color game\" - a niche card game from 1999 invented by designer ted naos. you can read more about it here:", gridStartX + gridWidth / 2 - rectWidth / 2, gridEndY - 50, 440);
-        infoLink.style("position", "relative");
+        text("this is a computational version of \"the color game\" - a niche card game from 1999 invented by designer ted naos. you can read more about it here:", gridStartX + gridWidth / 2 - rectWidth / 2, gridEndY - 50, 400);
+        infoLink.style("position", "absolute");
         infoLink.style("margin", "auto");
         infoLink.style("display", "block");
         infoLink.style("width", "100%");
         infoLink.style("text-align", "center");
         infoLink.style("font-size", "18px");
+        infoLink.style("top", `${gridEndY+100}px`)
         randomizeButton.style('font-size', '18px');
         randomizeButton.position(Math.max(16, width - 150), 35);
+        textSize(16);
+        text ("p.s code circles is not affiliated with eastgate or the designer in any way. we are a organization exploring coding for intention, community and fun.", gridStartX + gridWidth / 2 - rectWidth/2, gridEndY + 150, 400)
     } else {
         text("this is a computational version of \"the color game\" - a niche card game from 1999 invented by designer ted naos. you can read more about it here:", width / 2, gridEndY - 50, 700);
         infoLink.position(width / 2 - 250 / 2, gridEndY + 70);
         randomizeButton.position(gridStartX + gridWidth - rectWidth - SPACING - 25, 35);
+        text ("p.s code circles is not affiliated with eastgate or the designer in any way. we are a organization exploring coding for intention, community and fun.", width / 2, gridEndY + 150, 700)
     }
 }
